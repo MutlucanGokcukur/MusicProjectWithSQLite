@@ -1,0 +1,68 @@
+# -*- coding: cp1254 -*-
+from MusicProjectWithSQLite import *
+import time
+
+print("""
+SQLite Veritabaný ile Temel Þarký Kütüphanesi Programý
+Ýþlem Numaralarý:
+1-Þarkýlarý Gösterme
+2-Þarký Sorgulama
+3-Þarký Ekleme
+4-Þarký Sil
+0-Çýkýþ
+""")
+sarkýcý=Þarkýcý()
+sarkýsýrasý=0
+while True:
+    try:
+        secim=int(input("Ýþlem numarasý giriniz: "))
+    except ValueError:
+        print("Lütfen sayýsal deðerlerden birini giriniz...")
+
+    if secim==1:
+        sarkýcý.SarkýlarýGöster()
+    elif secim==2:
+        sarkýadý=input("Aramak istediðiniz þarkýnýn adýný giriniz: ")
+        sarkýadý=sarkýadý.upper()
+        sarkýcý.SarkýSorgu(sarkýadý)
+    elif secim==3:
+        sarkýsýrasý+=1
+        sarkýadý=input("Þarkýnýn Adý: ")
+        sarkýadý=sarkýadý.upper()
+        vokalist=input("Vokalist: ")
+        sarkýyazar=input("Söz yazarý: ")
+        müzik=input("Müzik: ")
+        albüm=input("Albüm: ")
+        try:
+            süre=float(input("Süre(Araya nokta giriniz): "))
+        except ValueError:
+            print("Süre yanlýþ formatta girildi...")
+        try:
+            yenimüzik=Þarkýlar(sarkýsýrasý,sarkýadý,vokalist,sarkýyazar,müzik,albüm,süre)
+            print("Þarký listeye ekleniyor...")
+            sarkýcý.ÞarkýEkle(yenimüzik)
+            time.sleep(2)
+            print("Þarký baþarýyla eklendi...")
+        except:
+            print("Bir hata meydana geldi...")
+    elif secim==4:
+        sarkýadý=input("Silmek istediðiniz þarkýnýn adýný giriniz: ")
+        sarkýadý=sarkýadý.upper()
+        cevap=input("Silmek istediðinizden emin misiniz?(E/H)")
+        cevap = cevap.upper()
+        if cevap=="E":
+            print("Þarký siliniyor....")
+            sarkýcý.ÞarkýSil(sarkýadý)
+            time.sleep(2)
+            print("Þarký baþarýyla silindi.")
+        elif cevap=="H":
+            print("Þarký silme iþlemi iptal edildi...")
+        else:
+            print("Geçersiz bir deðer girildi...")
+    elif secim==0:
+        print("Program sonlandýrýlýyor....")
+        time.sleep(2)
+        print("Yine bekleriz...")
+        break
+    else:
+        print("Geçersiz iþlem numarasý girildi")

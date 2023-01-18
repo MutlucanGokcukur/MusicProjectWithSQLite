@@ -1,0 +1,76 @@
+# -*- coding: cp1254 -*-
+import sqlite3
+import time
+
+class Þarkýlar():
+    def __init__(self,numara,isim,vokalist,sözyazarý,müzik,albüm,süre):
+        self.isim=isim
+        self.numara=numara
+        self.sözyazarý=sözyazarý
+        self.müzik=müzik
+        self.albüm=albüm
+        self.süre=süre
+        self.vokalist=vokalist
+
+    def __str__(self):
+        return "\n{}-Þarký Adý: {}\nVokalist: {}\nSöz Yazarý: {}\nMüzik: {}\nAlbüm: {}\nÞarký Süresi: {}\n".format(self.numara,self.isim,self.vokalist,self.sözyazarý,self.müzik,self.albüm,self.süre)
+
+class Þarkýcý():
+    def __init__(self):
+        self.Baglantý()
+    
+    def Baglantý(self):
+        self.baglantý=sqlite3.connect("sarkýlar.db")
+        self.cursor=self.baglantý.cursor()
+        sorgu="Create table If not exists sarkýlar (Numara INT,Sarký_Adý TEXT,Vokalist TEXT,Söz Yazarý TEXT,Müzik TEXT,Albüm TEXT,Sarký Süresi INT)"
+        self.cursor.execute(sorgu)
+        self.baglantý.commit()
+
+    def BaglantýKes(self):
+        self.baglantý.close()
+
+    def SarkýlarýGöster(self):
+        sorgu="Select * From sarkýlar"
+        self.cursor.execute(sorgu)
+        sarkýlar=self.cursor.fetchall()
+        if len(sarkýlar)==0:
+            print("Kayýtlý þarký bulunamadý...")
+        else:
+            for i in sarkýlar:
+                sarký=Þarkýlar(i[0],i[1],i[2],i[3],i[4],i[5],i[6])
+                print(sarký)
+
+    def SarkýSorgu(self,isim):
+        sorgu="Select * From sarkýlar Where Sarký_Adý=?"
+        self.cursor.execute(sorgu,(isim,))
+        sarkýlar=self.cursor.fetchall()
+        if len(sarkýlar)==0:
+            print("Girilen þarký parçasý bulunamadý...")
+        else:
+            sarký=Þarkýlar(sarkýlar[0][0],sarkýlar[0][1],sarkýlar[0][2],sarkýlar[0][3],sarkýlar[0][4],sarkýlar[0][5],sarkýlar[0][6])
+            print(sarký)
+
+    def ÞarkýEkle(self,sarký):
+        sorgu="Insert into sarkýlar VALUES(?,?,?,?,?,?,?)"
+        self.cursor.execute(sorgu,(sarký.numara,sarký.isim,sarký.vokalist,sarký.sözyazarý,sarký.müzik,sarký.albüm,sarký.süre))
+        self.baglantý.commit()
+
+    def ÞarkýSil(self,isim):
+        sorgu="Delete From sarkýlar where Sarký_Adý=?"
+        self.cursor.execute(sorgu,(isim,))
+        self.baglantý.commit()
+
+    
+
+            
+
+
+
+
+
+
+
+
+
+
+
