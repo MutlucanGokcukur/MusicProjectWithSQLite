@@ -1,6 +1,7 @@
 # -*- coding: cp1254 -*-
 from MusicProjectWithSQLite import *
 import time
+from pytube import YouTube
 
 print("""
 SQLite Veritabanı ile Temel Şarkı Kütüphanesi Programı
@@ -9,10 +10,22 @@ SQLite Veritabanı ile Temel Şarkı Kütüphanesi Programı
 2-Şarkı Sorgulama
 3-Şarkı Ekleme
 4-Şarkı Sil
+5-Sarkı Dinleme
 0-Çıkış
 """)
-sarkıcı=Şarkıcı()
 sarkısırası=0
+sarkıcı=Şarkıcı()
+baglantı=sqlite3.connect("sarkılar.db")
+cursor=baglantı.cursor()
+sorgu="Select * From sarkılar"
+cursor.execute(sorgu)
+sarkılar=cursor.fetchall()
+if len(sarkılar)==0:
+    sarkısrası=0
+else:
+    sarkısırası=sarkılar[0][0]
+    sarkısırası+=1
+print(sarkısırası)
 while True:
     try:
         secim=int(input("İşlem numarası giriniz: "))
@@ -59,6 +72,13 @@ while True:
             print("Şarkı silme işlemi iptal edildi...")
         else:
             print("Geçersiz bir değer girildi...")
+    elif secim==5:
+        sarkıcı.SarkılarıGöster()
+        try:
+            sarkınumara=int(input("Dinlemek istediğiniz şarkı numarasını giriniz: "))
+        except:
+            print("Lütfen sayısal bir numara giriniz...")
+        sarkıcı.SarkıAcma(sarkınumara)
     elif secim==0:
         print("Program sonlandırılıyor....")
         time.sleep(2)

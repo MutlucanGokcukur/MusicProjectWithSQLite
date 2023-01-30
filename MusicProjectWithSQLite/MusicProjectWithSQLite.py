@@ -1,64 +1,79 @@
-# -*- coding: cp1254 -*-
-import sqlite3
+ï»¿import sqlite3
 import time
+import pywhatkit as pwt
 
-class Şarkılar():
-    def __init__(self,numara,isim,vokalist,sözyazarı,müzik,albüm,süre):
+class ÅarkÄ±lar():
+    def __init__(self,numara,isim,vokalist,sÃ¶zyazarÄ±,mÃ¼zik,albÃ¼m,sÃ¼re):
         self.isim=isim
         self.numara=numara
-        self.sözyazarı=sözyazarı
-        self.müzik=müzik
-        self.albüm=albüm
-        self.süre=süre
+        self.sÃ¶zyazarÄ±=sÃ¶zyazarÄ±
+        self.mÃ¼zik=mÃ¼zik
+        self.albÃ¼m=albÃ¼m
+        self.sÃ¼re=sÃ¼re
         self.vokalist=vokalist
 
     def __str__(self):
-        return "\n{}-Şarkı Adı: {}\nVokalist: {}\nSöz Yazarı: {}\nMüzik: {}\nAlbüm: {}\nŞarkı Süresi: {}\n".format(self.numara,self.isim,self.vokalist,self.sözyazarı,self.müzik,self.albüm,self.süre)
+        return "\n{}-ÅarkÄ± AdÄ±: {}\nVokalist: {}\nSÃ¶z YazarÄ±: {}\nMÃ¼zik: {}\nAlbÃ¼m: {}\nÅarkÄ± SÃ¼resi: {}\n".format(self.numara,self.isim,self.vokalist,self.sÃ¶zyazarÄ±,self.mÃ¼zik,self.albÃ¼m,self.sÃ¼re)
 
-class Şarkıcı():
+class ÅarkÄ±cÄ±():
     def __init__(self):
-        self.Baglantı()
+        self.BaglantÄ±()
     
-    def Baglantı(self):
-        self.baglantı=sqlite3.connect("sarkılar.db")
-        self.cursor=self.baglantı.cursor()
-        sorgu="Create table If not exists sarkılar (Numara INT,Sarkı_Adı TEXT,Vokalist TEXT,Söz Yazarı TEXT,Müzik TEXT,Albüm TEXT,Sarkı Süresi INT)"
+    def BaglantÄ±(self):
+        self.baglantÄ±=sqlite3.connect("sarkÄ±lar.db")
+        self.cursor=self.baglantÄ±.cursor()
+        sorgu="Create table If not exists sarkÄ±lar (Numara INT,SarkÄ±_AdÄ± TEXT,Vokalist TEXT,SÃ¶z YazarÄ± TEXT,MÃ¼zik TEXT,AlbÃ¼m TEXT,SarkÄ± SÃ¼resi INT)"
         self.cursor.execute(sorgu)
-        self.baglantı.commit()
+        self.baglantÄ±.commit()
 
-    def BaglantıKes(self):
-        self.baglantı.close()
-
-    def SarkılarıGöster(self):
-        sorgu="Select * From sarkılar"
+    def BaglantÄ±Kes(self):
+        self.baglantÄ±.close()
+    def SarkÄ±larÄ±GÃ¶ster(self):
+        sorgu="Select * From sarkÄ±lar"
         self.cursor.execute(sorgu)
-        sarkılar=self.cursor.fetchall()
-        if len(sarkılar)==0:
-            print("Kayıtlı şarkı bulunamadı...")
+        sarkÄ±lar=self.cursor.fetchall()
+        if len(sarkÄ±lar)==0:
+            print("KayÄ±tlÄ± ÅŸarkÄ± bulunamadÄ±...")
         else:
-            for i in sarkılar:
-                sarkı=Şarkılar(i[0],i[1],i[2],i[3],i[4],i[5],i[6])
-                print(sarkı)
+            for i in sarkÄ±lar:
+                sarkÄ±=ÅarkÄ±lar(i[0],i[1],i[2],i[3],i[4],i[5],i[6])
+                print(sarkÄ±)
 
-    def SarkıSorgu(self,isim):
-        sorgu="Select * From sarkılar Where Sarkı_Adı=?"
+    def SarkÄ±Sorgu(self,isim):
+        sorgu="Select * From sarkÄ±lar Where SarkÄ±_AdÄ±=?"
         self.cursor.execute(sorgu,(isim,))
-        sarkılar=self.cursor.fetchall()
-        if len(sarkılar)==0:
-            print("Girilen şarkı parçası bulunamadı...")
+        sarkÄ±lar=self.cursor.fetchall()
+        if len(sarkÄ±lar)==0:
+            print("Girilen ÅŸarkÄ± parÃ§asÄ± bulunamadÄ±...")
         else:
-            sarkı=Şarkılar(sarkılar[0][0],sarkılar[0][1],sarkılar[0][2],sarkılar[0][3],sarkılar[0][4],sarkılar[0][5],sarkılar[0][6])
-            print(sarkı)
+            sarkÄ±=ÅarkÄ±lar(sarkÄ±lar[0][0],sarkÄ±lar[0][1],sarkÄ±lar[0][2],sarkÄ±lar[0][3],sarkÄ±lar[0][4],sarkÄ±lar[0][5],sarkÄ±lar[0][6])
+            print(sarkÄ±)
 
-    def ŞarkıEkle(self,sarkı):
-        sorgu="Insert into sarkılar VALUES(?,?,?,?,?,?,?)"
-        self.cursor.execute(sorgu,(sarkı.numara,sarkı.isim,sarkı.vokalist,sarkı.sözyazarı,sarkı.müzik,sarkı.albüm,sarkı.süre))
-        self.baglantı.commit()
+    def ÅarkÄ±Ekle(self,sarkÄ±):
+        sorgu="Insert into sarkÄ±lar VALUES(?,?,?,?,?,?,?)"
+        self.cursor.execute(sorgu,(sarkÄ±.numara,sarkÄ±.isim,sarkÄ±.vokalist,sarkÄ±.sÃ¶zyazarÄ±,sarkÄ±.mÃ¼zik,sarkÄ±.albÃ¼m,sarkÄ±.sÃ¼re))
+        self.baglantÄ±.commit()
 
-    def ŞarkıSil(self,isim):
-        sorgu="Delete From sarkılar where Sarkı_Adı=?"
+    def ÅarkÄ±Sil(self,isim):
+        sorgu="Delete From sarkÄ±lar where SarkÄ±_AdÄ±=?"
         self.cursor.execute(sorgu,(isim,))
-        self.baglantı.commit()
+        self.baglantÄ±.commit()
+
+    def SarkÄ±Acma(self,numara):
+        sorgu="Select * From sarkÄ±lar Where Numara=?"
+        self.cursor.execute(sorgu,(numara,))
+        sarkÄ±lar=self.cursor.fetchall()
+        if len(sarkÄ±lar)==0:
+            print("KayÄ±tlÄ± ÅŸarkÄ± bulunamadÄ±...")
+        else:
+            sarkÄ±adÄ±=sarkÄ±lar[0][2]+"-"+sarkÄ±lar[0][1]
+            print("SeÃ§ilen ÅŸarkÄ±: {}".format(sarkÄ±adÄ±))
+            print("AÃ§Ä±lÄ±yor...")
+            time.sleep(2)
+            pwt.playonyt(sarkÄ±adÄ±)
+
+                        
+
 
     
 
